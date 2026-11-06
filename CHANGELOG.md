@@ -9,4 +9,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Add `ApprovalGate`, `MemoryStore` and `JsonFileStore`: payload-bound, expiring, single-use human approval for agent actions with no self-approval and a hash-chained, verifiable audit log.
 - Initial project structure from the factory utility template.
