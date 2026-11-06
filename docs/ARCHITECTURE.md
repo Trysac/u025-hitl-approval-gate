@@ -2,27 +2,26 @@
 
 ## Purpose
 
-`trysac-hitl-approval-gate` is a small, dependency-free Python library: Human approval gate for agent actions with side effects: payload-bound requests, expiry, single use, no self-approval and a hash-chained audit log
+`trysac-hitl-approval-gate` is a small, dependency-free Python library that puts risky agent actions behind a payload-bound, expiring, single-use human approval with a hash-chained audit log.
 
 ## Shape
 
 ```text
 caller code --> hitl_approval_gate (public API in __init__.py)
                     |
-                    +-- pure functions, no I/O, no global state
+                    +-- ApprovalGate (state machine, threading.Lock)
+                    +-- ApprovalStore: MemoryStore | JsonFileStore (atomic replace)
 ```
 
-- **Public API**: the names listed in `__all__` of `src/hitl_approval_gate/__init__.py`. Anything else is
-  internal and may change without a major version.
-- **Errors**: invalid input raises built-in exceptions (`ValueError`, `TypeError`) with a clear
-  message; the library never prints or exits.
-- **Side effects**: none. If a feature needs I/O, isolate it in its own module behind a small
-  interface and record the choice in an ADR.
+- **Public API**: the names listed in `__all__` of `src/hitl_approval_gate/__init__.py`. Anything else is internal.
+- **Data**: `ApprovalRequest` and `AuditRecord` are frozen dataclasses. `AuditRecord.at` is an ISO 8601 UTC string.
+- **Stores**: `JsonFileStore` re-reads the file on every operation and replaces it atomically through a fsynced temporary file. The built-in stores provide `commit(req, record)` so a request and its audit record are written together; other stores fall back to `save` plus `append_audit`.
+- **Errors**: failures raise `ApprovalError` with a stable `code`; messages never contain payload values.
+- **Logging**: a module logger with a `NullHandler`; the library never configures logging.
 
 ## Quality contract
 
-`scripts/check.py` is the single definition of the gates; `fabrica.json` tells the factory and CI
-how to run it. See [TESTING.md](TESTING.md).
+`scripts/check.py` is the single definition of the gates; `fabrica.json` tells the factory and CI how to run it. See [TESTING.md](TESTING.md).
 
 ## Decisions
 

@@ -1,16 +1,16 @@
 # hitl-approval-gate
 
-> Human approval gate for agent actions with side effects: payload-bound requests, expiry, single use, no self-approval and a hash-chained audit log Python package `trysac-hitl-approval-gate`, import name `hitl_approval_gate`, MIT licensed,
-> Python >= 3.10, no runtime dependencies.
+> Human approval gate for agent actions with side effects: payload-bound requests, expiry, single use, no self-approval and a hash-chained audit log. Python package `trysac-hitl-approval-gate`, import name `hitl_approval_gate`, MIT licensed, Python >= 3.10, no runtime dependencies.
 
 ## Docs
 
-- [README](README.md): problem, install, usage example
-- [AGENTS](AGENTS.md): commands, folder map, conventions, limits
-- [Architecture](docs/ARCHITECTURE.md): shape of the package and its public API
+- [README](README.md): problem, install, usage example, public API
+- [Architecture](docs/ARCHITECTURE.md): shape of the package and its stores
+- [Security](docs/SECURITY.md): threat model and limits
 - [Testing](docs/TESTING.md): how to run and extend the tests
 
 ## Optional
 
+- [Project](docs/PROJECT.md): objective and scope
 - [Stack](docs/STACK.md): tools used and discarded
 - [Changelog](CHANGELOG.md): release history
